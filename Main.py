@@ -214,7 +214,8 @@ class SignUp(QDialog):
 
 
 #To access the UImain.py 
-
+#input: main window 
+#output: main window ui
 class MainWindow(QMainWindow):
     def __init__(self, parent = None):
         QMainWindow.__init__(self,parent)
@@ -232,7 +233,8 @@ class MainWindow(QMainWindow):
         self.ui.refresh.clicked.connect(self.kill_run)
         self.ui.pushButton.clicked.connect(self.Edit_list)
 
-
+    #input new_ticker, user_pass , current_user and ui elements
+    #output: it will change the data base however it will not return an output to the code.
     #handeling the delete function 
     def Edit_list(self):
         global New_ticker
@@ -272,8 +274,8 @@ class MainWindow(QMainWindow):
             csvwriter.writerows(user_pass) 
 
     # handels the threadign 
-    #input New_input
-
+    #input New_ticker and ui elements (self)
+    #output: it does not hav an output by it self as it starts multi threading for other functions.
     def Add_To_List(self):
         global New_ticker
         New_ticker = self.ui.New_input.toPlainText().upper() if self.ui.New_input.toPlainText() != '' else QtWidgets.QMessageBox.warning(self, 'Error', "Pleas enter a new ticker")
@@ -286,14 +288,17 @@ class MainWindow(QMainWindow):
 
 
     #this will kil an existing thread in order to prevent bugs and then it runs a new one
-    #no input or output
+    #no input or output apart from self
     def kill_run(self):
         global thread
         if thread.is_alive() != True:
             self.running_macd()
 
     #this function is ran by the thread to prevent crashes it checks for the price of a ticker 
-    #input (gets the global value of the ticker)
+    #input (gets the global value of the ticker) ui elements and progress_callback
+    '''progress_callback is an argument for the Mthreading function which is used to pass callbacks'''
+    #output: because this passes the mthreading class the output is accessed by another function (Add_To_List_out)
+    
     def getting_price(self,progress_callback):
         global New_ticker
         global user_pass
@@ -332,7 +337,8 @@ class MainWindow(QMainWindow):
         return result
 
 
-    #out put of the thread
+    #out put of the getting_price thread is the input for this function (s)
+    #outputs the result as message box
     def Add_To_List_out(self,s):
         if s >= 0:
             QtWidgets.QMessageBox.information(self, 'Done', "Ticker was added successfully.")
@@ -346,8 +352,14 @@ class MainWindow(QMainWindow):
 
 
     #this code will run the mac_d in the background it also turns the multi threading on
-    #input null
-    #out put null
+    #input self and 
+        # global timeframe 
+        # global Short 
+        # global smoothing 
+        # global fast 
+        # global data_length
+        # global current_user
+    # no output as this function only starts a thread
     def running_macd(self):
         global timeframe #to store the time frame
         global Short #to store the short value
@@ -415,7 +427,9 @@ class MainWindow(QMainWindow):
         self.threadpool.start(worker)
 
     #this function will keep the code running in the background without the UI crashing
-    #input (macd values in the ui)
+    #input (macd values in the ui) ui elements and progress_callback
+    '''progress_callback is an argument for the Mthreading function which is used to pass callbacks'''
+    #output: because this passes the mthreading class the output is accessed by another function (loading_handle_out)
     #output result of macd
     def loading_handle(self,progress_callback):
         global current_user
@@ -452,6 +466,9 @@ class MainWindow(QMainWindow):
         print(results)
         return [results,alarm_list]
 
+
+#   output of the loading_handle is the input for this function (s)
+    #output it displays the result on the table widget in the main ui
     def loading_handle_out(self,s):
         global thread
         global timeframe
@@ -482,7 +499,8 @@ class MainWindow(QMainWindow):
 
 
 #### for quick sorting ###
-
+#input self array lowest and the highest
+#output: slightly adjusted array
 #this will sort the out put for the table
     def partition(self, arr_list, low, high):
         i = (low-1)		 # index of smaller element
@@ -501,6 +519,7 @@ class MainWindow(QMainWindow):
         arr_list[i+1], arr_list[high] = arr_list[high], arr_list[i+1]
         return (i+1)
 
+#input self array to be sorted lowest value anf the highest value
     def quickSort(self, arr_list, low, high):
         #will return the current list if there is only one element
         if len(arr_list) == 1:
