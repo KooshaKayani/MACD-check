@@ -146,10 +146,12 @@ class Login(QDialog):
 
    
 
-
+#input: pyqt elements and signup ui
+#output the sign up ui
 #the sign up class to access the SignUp_Ui 
 class SignUp(QDialog):
-    
+    #input self 
+    #output: none 
     def __init__(self, parent = None):
         QDialog.__init__(self,parent)
 
@@ -157,17 +159,19 @@ class SignUp(QDialog):
         self.ui.setupUi(self)
         self.show()
 
-        
+        #connecting the front end to the backend
         self.ui.Login_s.clicked.connect(self.handleLogin)
         self.ui.SignUp_s.clicked.connect(self.registration)
 
     #input: self
+    #output: close()
     # to handle transition to the login page
     def handleLogin(self):
         self.close()    
 
 
-    #input: self
+    #input: self and ui elements such as entry felid
+    # output Null but update the data base an
     # performs field checks and saves the user and password
     def registration(self):
 
