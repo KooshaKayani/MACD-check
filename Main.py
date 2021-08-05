@@ -56,8 +56,9 @@ filename = "data.csv" # CSV file
 
 
 #this class is for handeling login gui and functions 
+#input is ui paraments and args
 class Login(QDialog):
-    
+    #adjustments of the class and ui
     def __init__(self, parent = None):
         QDialog.__init__(self,parent)
         #to start the ui
@@ -71,8 +72,9 @@ class Login(QDialog):
         self.ui.SignUp_L.clicked.connect(self.handleSignin)
 
     
-    #input: self 
+    #input: self user_name user_pass current_user also ui elements such as different inputs
     # this code will use the inputs from the ui to check the user and pass 
+    #output : Null or Accept()
     def handleLogin(self):
         #global functions 
         global user_name 
@@ -136,6 +138,7 @@ class Login(QDialog):
 
 
     #input: self 
+    #output: null
     # Will handle the transition to Sign up page    
     def handleSignin(self):
         self.cams = SignUp()
